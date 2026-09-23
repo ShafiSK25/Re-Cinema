@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("USER") // "USER" or "ADMIN"
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+}
+
+model Movie {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  posterUrl   String
+  bannerUrl   String?
+  trailerUrl  String?
+  genre       String   // e.g. "Action, Sci-Fi"
+  language    String   // e.g. "English, Hindi"
+  durationMin Int      // in minutes e.g. 165
+  releaseDate DateTime
+  rating      Float    @default(8.5)
+  isActive    Boolean  @default(true)
+  shows       Show[]
+  createdAt   DateTime @default(now())
+}
+
+model Theatre {
+  id        String   @id @default(cuid())
+  name      String
+  city      String
+  address   String
+  screens   Screen[]
+  createdAt DateTime @default(now())
+}
+
+model Screen {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Screen 1 - IMAX"
+  theatreId   String
+  theatre     Theatre  @relation(fields: [theatreId], references: [id], onDelete: Cascade)
+  screenType  String   // "2D", "3D", "IMAX", "4DX"
+  totalRows   Int      @default(8)   // Rows A through H
+  seatsPerRow Int      @default(12)  // 1 through 12
+  shows       Show[]
+  createdAt   DateTime @default(now())
+}
+
+model Show {
+  id          String    @id @default(cuid())
+  movieId     String
+  movie       Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  screenId    String
+  screen      Screen    @relation(fields: [screenId], references: [id], onDelete: Cascade)
+  startTime   DateTime
+  priceSilver Float     @default(180)
+  priceGold   Float     @default(250)
+  priceVip    Float     @default(420)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  bookingNumber String   @unique // e.g. "BMS-749201"
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  showId        String
+  show          Show     @relation(fields: [showId], references: [id])
+  seats         String   // JSON string of seats, e.g. '["A1","A2"]'
+  totalAmount   Float
+  paymentStatus String   // "PAID", "FAILED"
+  paymentMethod String   // "CARD", "UPI", "NETBANKING"
+  createdAt     DateTime @default(now())
+}
