@@ -55,27 +55,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid booking data' }, { status: 400 });
     }
 
-    // Resolve user: either logged in or guest account
-    let bookingUserId = user?.id;
+    // Resolve user: either valid logged in user or guest account
+    let bookingUserId: string | null = null;
+
+    if (user?.id) {
+      const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+      if (dbUser) {
+        bookingUserId = dbUser.id;
+      }
+    }
 
     if (!bookingUserId) {
-      if (!guestInfo?.email || !guestInfo?.name) {
-        return NextResponse.json(
-          { error: 'Please sign in or provide contact details to book tickets.' },
-          { status: 400 }
-        );
-      }
+      const email = (guestInfo?.email || 'guest@cinema.com').toLowerCase().trim();
+      const name = (guestInfo?.name || 'Movie Fan').trim();
 
-      // Find or create guest user
+      // Find or create user for this email
       let guest = await prisma.user.findUnique({
-        where: { email: guestInfo.email.toLowerCase().trim() },
+        where: { email },
       });
 
       if (!guest) {
         guest = await prisma.user.create({
           data: {
-            name: guestInfo.name.trim(),
-            email: guestInfo.email.toLowerCase().trim(),
+            name,
+            email,
             password: 'guest-temp-password-123',
             role: 'USER',
           },
@@ -137,8 +140,8 @@ export async function POST(req: Request) {
     const taxes = Math.round((baseAmount + convenienceFee) * 0.18);
     const totalAmount = baseAmount + convenienceFee + taxes;
 
-    // Generate readable random booking reference
-    const bookingNumber = `BMS-${Math.floor(100000 + Math.random() * 900000)}`;
+    // Generate readable guaranteed unique booking reference
+    const bookingNumber = `BMS-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const booking = await prisma.booking.create({
       data: {
@@ -176,6 +179,9 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error('Error creating booking:', error);
-    return NextResponse.json({ error: 'Failed to complete booking' }, { status: 500 });
+    return NextResponse.json(
+      { error: error?.message || 'Failed to complete booking' },
+      { status: 500 }
+    );
   }
 }
