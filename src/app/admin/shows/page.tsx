@@ -273,10 +273,10 @@ export default function AdminShowsPage() {
                   required
                   value={movieId}
                   onChange={(e) => setMovieId(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.15] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                 >
                   {movies.map((m) => (
-                    <option key={m.id} value={m.id}>
+                    <option key={m.id} value={m.id} className="bg-[#0e1118] text-white py-1">
                       {m.title} ({m.language})
                     </option>
                   ))}
@@ -291,10 +291,10 @@ export default function AdminShowsPage() {
                   required
                   value={screenId}
                   onChange={(e) => setScreenId(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.15] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                 >
                   {screens.map((s) => (
-                    <option key={s.id} value={s.id}>
+                    <option key={s.id} value={s.id} className="bg-[#0e1118] text-white py-1">
                       {s.theatre?.name} - {s.name} ({s.screenType})
                     </option>
                   ))}
@@ -311,7 +311,7 @@ export default function AdminShowsPage() {
                     required
                     value={showDate}
                     onChange={(e) => setShowDate(e.target.value)}
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500"
+                    className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                   />
                 </div>
 
@@ -324,7 +324,7 @@ export default function AdminShowsPage() {
                     required
                     value={showTime}
                     onChange={(e) => setShowTime(e.target.value)}
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500"
+                    className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                   />
                 </div>
               </div>
@@ -342,7 +342,7 @@ export default function AdminShowsPage() {
                       required
                       value={priceSilver}
                       onChange={(e) => setPriceSilver(Number(e.target.value))}
-                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-[#8cf202]"
                     />
                   </div>
                   <div>
@@ -352,7 +352,7 @@ export default function AdminShowsPage() {
                       required
                       value={priceGold}
                       onChange={(e) => setPriceGold(Number(e.target.value))}
-                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-[#8cf202]"
                     />
                   </div>
                   <div>
@@ -362,7 +362,7 @@ export default function AdminShowsPage() {
                       required
                       value={priceVip}
                       onChange={(e) => setPriceVip(Number(e.target.value))}
-                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-[#8cf202]"
                     />
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default function AdminShowsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs shadow-md transition disabled:opacity-50"
+                  className="px-4 py-1.5 bg-[#8cf202] hover:bg-[#9eff00] text-black font-black rounded-xl text-xs shadow-md transition disabled:opacity-50"
                 >
                   {submitting ? 'Scheduling...' : 'Schedule'}
                 </button>

@@ -10,6 +10,7 @@
     --border: rgba(255, 255, 255, 0.07);
     --neon-green: #8cf202;
     --neon-green-glow: rgba(140, 242, 2, 0.35);
+    color-scheme: dark;
   }
 
   body {
@@ -19,6 +20,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+
+  /* Fix for all dropdown select options across browser and OS */
+  select {
+    color-scheme: dark;
+  }
+
+  select option {
+    background-color: #0e1118 !important;
+    color: #ffffff !important;
   }
 }
 

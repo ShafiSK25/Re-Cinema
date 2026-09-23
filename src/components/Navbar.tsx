@@ -118,13 +118,13 @@ export default function Navbar() {
                   aria-label="Select City"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  className="bg-transparent text-slate-200 outline-none cursor-pointer text-xs font-medium"
+                  className="bg-[#0e1118] text-white outline-none cursor-pointer text-xs font-semibold"
                 >
-                  <option value="Mumbai" className="bg-[#0e1118] text-white">Mumbai</option>
-                  <option value="Delhi-NCR" className="bg-[#0e1118] text-white">Delhi-NCR</option>
-                  <option value="Bengaluru" className="bg-[#0e1118] text-white">Bengaluru</option>
-                  <option value="Hyderabad" className="bg-[#0e1118] text-white">Hyderabad</option>
-                  <option value="Chennai" className="bg-[#0e1118] text-white">Chennai</option>
+                  <option value="Mumbai" className="bg-[#0e1118] text-white py-1">Mumbai</option>
+                  <option value="Delhi-NCR" className="bg-[#0e1118] text-white py-1">Delhi-NCR</option>
+                  <option value="Bengaluru" className="bg-[#0e1118] text-white py-1">Bengaluru</option>
+                  <option value="Hyderabad" className="bg-[#0e1118] text-white py-1">Hyderabad</option>
+                  <option value="Chennai" className="bg-[#0e1118] text-white py-1">Chennai</option>
                 </select>
               </div>
 
