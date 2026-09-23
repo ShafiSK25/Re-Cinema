@@ -279,10 +279,10 @@ export default function AdminScreensPage() {
                   required
                   value={theatreId}
                   onChange={(e) => setTheatreId(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.15] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                 >
                   {theatres.map((t) => (
-                    <option key={t.id} value={t.id}>
+                    <option key={t.id} value={t.id} className="bg-[#0e1118] text-white py-1">
                       {t.name} ({t.city})
                     </option>
                   ))}
@@ -299,7 +299,7 @@ export default function AdminScreensPage() {
                   placeholder="e.g. Screen 3 - IMAX Laser"
                   value={screenName}
                   onChange={(e) => setScreenName(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs placeholder-slate-500 focus:outline-none focus:border-[#8cf202]"
                 />
               </div>
 
@@ -310,12 +310,12 @@ export default function AdminScreensPage() {
                 <select
                   value={screenType}
                   onChange={(e) => setScreenType(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.15] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                 >
-                  <option value="IMAX">IMAX with Laser</option>
-                  <option value="4DX">4DX Motion & Effects</option>
-                  <option value="3D">3D RealD</option>
-                  <option value="2D">Standard 2D Dolby 7.1</option>
+                  <option value="IMAX" className="bg-[#0e1118] text-white py-1">IMAX with Laser</option>
+                  <option value="4DX" className="bg-[#0e1118] text-white py-1">4DX Motion &amp; Effects</option>
+                  <option value="3D" className="bg-[#0e1118] text-white py-1">3D RealD</option>
+                  <option value="2D" className="bg-[#0e1118] text-white py-1">Standard 2D Dolby 7.1</option>
                 </select>
               </div>
 
@@ -330,7 +330,7 @@ export default function AdminScreensPage() {
                     max={12}
                     value={totalRows}
                     onChange={(e) => setTotalRows(Number(e.target.value))}
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                   />
                   <span className="text-[10px] text-slate-500 mt-0.5 block">Rows A to {String.fromCharCode(64 + totalRows)}</span>
                 </div>
@@ -345,7 +345,7 @@ export default function AdminScreensPage() {
                     max={20}
                     value={seatsPerRow}
                     onChange={(e) => setSeatsPerRow(Number(e.target.value))}
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                   />
                   <span className="text-[10px] text-slate-500 mt-0.5 block">{totalRows * seatsPerRow} Total Seats</span>
                 </div>
@@ -362,7 +362,7 @@ export default function AdminScreensPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow-md transition disabled:opacity-50"
+                  className="px-4 py-1.5 bg-[#8cf202] hover:bg-[#9eff00] text-black font-black rounded-xl text-xs shadow-md transition disabled:opacity-50"
                 >
                   {submitting ? 'Creating...' : 'Create Screen'}
                 </button>
@@ -402,7 +402,7 @@ export default function AdminScreensPage() {
                   placeholder="e.g. PVR Superplex: Mall of India"
                   value={theatreName}
                   onChange={(e) => setTheatreName(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-rose-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.12] rounded-xl px-3 py-2 text-xs placeholder-slate-500 focus:outline-none focus:border-[#8cf202]"
                 />
               </div>
 
@@ -413,13 +413,13 @@ export default function AdminScreensPage() {
                 <select
                   value={theatreCity}
                   onChange={(e) => setTheatreCity(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500"
+                  className="w-full bg-[#0e1118] text-white border border-white/[0.15] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#8cf202]"
                 >
-                  <option value="Mumbai">Mumbai</option>
-                  <option value="Delhi-NCR">Delhi-NCR</option>
-                  <option value="Bengaluru">Bengaluru</option>
-                  <option value="Hyderabad">Hyderabad</option>
-                  <option value="Chennai">Chennai</option>
+                  <option value="Mumbai" className="bg-[#0e1118] text-white py-1">Mumbai</option>
+                  <option value="Delhi-NCR" className="bg-[#0e1118] text-white py-1">Delhi-NCR</option>
+                  <option value="Bengaluru" className="bg-[#0e1118] text-white py-1">Bengaluru</option>
+                  <option value="Hyderabad" className="bg-[#0e1118] text-white py-1">Hyderabad</option>
+                  <option value="Chennai" className="bg-[#0e1118] text-white py-1">Chennai</option>
                 </select>
               </div>
 
