@@ -15,6 +15,7 @@ import {
   Volume2,
   Tv,
   Film,
+  Plus,
 } from 'lucide-react';
 import { MovieItem } from '@/types';
 
@@ -106,7 +107,7 @@ export default function HomePage() {
         <div className="lg:col-span-8 xl:col-span-9 space-y-8">
           
           {/* Section: Recent Premiered Films Banner (Immersive Widescreen Showcase) */}
-          {activeBannerMovie && (
+          {activeBannerMovie ? (
             <section className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0f16] shadow-2xl group">
               <div className="relative w-full h-80 sm:h-96">
                 <img
@@ -224,6 +225,38 @@ export default function HomePage() {
                 )}
               </div>
             </section>
+          ) : (
+            <section className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0f16] p-8 sm:p-12 shadow-2xl text-center flex flex-col items-center justify-center space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#8cf202]/10 border border-[#8cf202]/30 flex items-center justify-center text-[#8cf202]">
+                <Film className="w-6 h-6" />
+              </div>
+              <div className="space-y-2 max-w-lg">
+                <span className="text-[10px] font-mono uppercase font-black tracking-widest text-[#8cf202] bg-[#8cf202]/10 border border-[#8cf202]/20 px-2.5 py-1 rounded-md">
+                  MULTIPLEXES READY
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                  No Movies Currently Scheduled
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                  Your cinema multiplexes and screens are active and configured. Use the Admin Portal to add premiere titles and schedule showtimes.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-2">
+                <Link
+                  href="/admin/movies"
+                  className="flex items-center gap-2 bg-[#8cf202] hover:bg-[#9eff00] text-black font-black text-xs px-5 py-2.5 rounded-xl shadow-[0_0_15px_rgba(140,242,2,0.35)] transition"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add First Movie</span>
+                </Link>
+                <Link
+                  href="/admin/screens"
+                  className="flex items-center gap-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition"
+                >
+                  <span>View Multiplexes</span>
+                </Link>
+              </div>
+            </section>
           )}
 
           {/* Section: Latest Releases / Now Showing (Matching Image 1 & Image 2) */}
@@ -269,105 +302,124 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Poster Cards Grid (Exact design from Image 1 & 2) */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filteredMovies.map((movie) => (
-                <div key={movie.id} className="group flex flex-col space-y-2">
-                  {/* Poster Thumbnail */}
+            {/* Poster Cards Grid */}
+            {filteredMovies.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredMovies.map((movie) => (
+                  <div key={movie.id} className="group flex flex-col space-y-2">
+                    {/* Poster Thumbnail */}
+                    <Link
+                      href={`/movie/${movie.id}`}
+                      className="relative block aspect-[3/4.2] w-full rounded-xl overflow-hidden bg-[#0c0f16] border border-white/[0.08] group-hover:border-[#8cf202]/60 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(140,242,2,0.15)]"
+                    >
+                      <img
+                        src={movie.posterUrl}
+                        alt={movie.title}
+                        className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+
+                      {/* Top Badges: Star Rating & Age Rating (Image 1 style) */}
+                      <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                        <div className="flex items-center gap-1 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-black text-amber-400 border border-white/10">
+                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                          <span>{movie.rating}</span>
+                        </div>
+                        <div className="bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-bold text-slate-300 border border-white/10">
+                          PG-13
+                        </div>
+                      </div>
+
+                      {/* Bottom Specs Bar on the image (Exact icons from Image 1: [12 / mic / list]) */}
+                      <div className="absolute bottom-2 inset-x-2 flex items-center justify-between text-[10px] font-mono bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-white/10 text-slate-300">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center gap-1">
+                            <Tv className="w-3 h-3 text-[#8cf202]" />
+                            IMAX
+                          </span>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <Volume2 className="w-3 h-3 text-slate-400" />
+                            Dolby
+                          </span>
+                        </div>
+                        <span className="text-[#8cf202] font-black">Book</span>
+                      </div>
+                    </Link>
+
+                    {/* Title & Info Below Poster (Image 1 style) */}
+                    <div className="space-y-0.5 px-0.5">
+                      <Link
+                        href={`/movie/${movie.id}`}
+                        className="flex items-center gap-1.5 group-hover:text-[#8cf202] transition-colors"
+                      >
+                        {/* Green Status Dot */}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#8cf202] inline-block flex-shrink-0 shadow-[0_0_5px_#8cf202]" />
+                        <h3 className="font-black text-xs text-white line-clamp-1">
+                          {movie.title}
+                        </h3>
+                      </Link>
+                      <p className="text-[10px] text-slate-500 font-medium pl-3">
+                        {movie.language.split(',')[0]} • {movie.durationMin}m
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-10 rounded-2xl bg-[#0c0f16] border border-white/[0.06] text-center flex flex-col items-center justify-center space-y-3">
+                <Ticket className="w-8 h-8 text-slate-600" />
+                <h4 className="text-sm font-bold text-white">No movies currently showing</h4>
+                <p className="text-xs text-slate-400 max-w-sm">
+                  {search ? `No movies matching "${search}".` : 'Add your first movie from the Admin Portal to start scheduling shows.'}
+                </p>
+                <Link
+                  href="/admin/movies"
+                  className="text-xs text-[#8cf202] hover:underline font-bold mt-1 inline-flex items-center gap-1"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Movies in Admin</span>
+                </Link>
+              </div>
+            )}
+          </section>
+
+          {/* Section: New on Site (Only render if movies exist) */}
+          {movies.length > 0 && (
+            <section className="space-y-4 pt-4">
+              <h2 className="text-lg font-black text-white flex items-center gap-2 tracking-tight">
+                <span className="w-1.5 h-4 bg-[#8cf202] rounded-full inline-block shadow-[0_0_8px_#8cf202]" />
+                <span>New on Site</span>
+              </h2>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {movies.map((movie) => (
                   <Link
+                    key={`new-${movie.id}`}
                     href={`/movie/${movie.id}`}
-                    className="relative block aspect-[3/4.2] w-full rounded-xl overflow-hidden bg-[#0c0f16] border border-white/[0.08] group-hover:border-[#8cf202]/60 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(140,242,2,0.15)]"
+                    className="group bg-[#0e1118] border border-white/[0.06] hover:border-[#8cf202]/50 p-2 rounded-xl transition flex items-center gap-3"
                   >
                     <img
                       src={movie.posterUrl}
                       alt={movie.title}
-                      className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                      className="w-10 h-14 object-cover rounded-lg flex-shrink-0"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-
-                    {/* Top Badges: Star Rating & Age Rating (Image 1 style) */}
-                    <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                      <div className="flex items-center gap-1 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-black text-amber-400 border border-white/10">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        <span>{movie.rating}</span>
-                      </div>
-                      <div className="bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-bold text-slate-300 border border-white/10">
-                        PG-13
-                      </div>
-                    </div>
-
-                    {/* Bottom Specs Bar on the image (Exact icons from Image 1: [12 / mic / list]) */}
-                    <div className="absolute bottom-2 inset-x-2 flex items-center justify-between text-[10px] font-mono bg-black/80 backdrop-blur-md px-2 py-1 rounded border border-white/10 text-slate-300">
-                      <div className="flex items-center gap-2">
-                        <span className="flex items-center gap-1">
-                          <Tv className="w-3 h-3 text-[#8cf202]" />
-                          IMAX
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Volume2 className="w-3 h-3 text-slate-400" />
-                          Dolby
-                        </span>
-                      </div>
-                      <span className="text-[#8cf202] font-black">Book</span>
+                    <div className="space-y-0.5 overflow-hidden">
+                      <span className="text-[9px] text-[#8cf202] font-mono font-bold block uppercase">
+                        Premiere
+                      </span>
+                      <h4 className="font-bold text-xs text-white truncate group-hover:text-[#8cf202] transition-colors">
+                        {movie.title}
+                      </h4>
+                      <span className="text-[10px] text-slate-500 block">
+                        ★ {movie.rating} • {movie.durationMin}m
+                      </span>
                     </div>
                   </Link>
-
-                  {/* Title & Info Below Poster (Image 1 style) */}
-                  <div className="space-y-0.5 px-0.5">
-                    <Link
-                      href={`/movie/${movie.id}`}
-                      className="flex items-center gap-1.5 group-hover:text-[#8cf202] transition-colors"
-                    >
-                      {/* Green Status Dot */}
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#8cf202] inline-block flex-shrink-0 shadow-[0_0_5px_#8cf202]" />
-                      <h3 className="font-black text-xs text-white line-clamp-1">
-                        {movie.title}
-                      </h3>
-                    </Link>
-                    <p className="text-[10px] text-slate-500 font-medium pl-3">
-                      {movie.language.split(',')[0]} • {movie.durationMin}m
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Section: New on Site (Image 1 style section) */}
-          <section className="space-y-4 pt-4">
-            <h2 className="text-lg font-black text-white flex items-center gap-2 tracking-tight">
-              <span className="w-1.5 h-4 bg-[#8cf202] rounded-full inline-block shadow-[0_0_8px_#8cf202]" />
-              <span>New on Site</span>
-            </h2>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {movies.map((movie) => (
-                <Link
-                  key={`new-${movie.id}`}
-                  href={`/movie/${movie.id}`}
-                  className="group bg-[#0e1118] border border-white/[0.06] hover:border-[#8cf202]/50 p-2 rounded-xl transition flex items-center gap-3"
-                >
-                  <img
-                    src={movie.posterUrl}
-                    alt={movie.title}
-                    className="w-10 h-14 object-cover rounded-lg flex-shrink-0"
-                  />
-                  <div className="space-y-0.5 overflow-hidden">
-                    <span className="text-[9px] text-[#8cf202] font-mono font-bold block uppercase">
-                      Premiere
-                    </span>
-                    <h4 className="font-bold text-xs text-white truncate group-hover:text-[#8cf202] transition-colors">
-                      {movie.title}
-                    </h4>
-                    <span className="text-[10px] text-slate-500 block">
-                      ★ {movie.rating} • {movie.durationMin}m
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Right Column: Top Trending Ranking Board (Matching Reference Image 2) */}
@@ -396,55 +448,62 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Ranked List (Exact huge italic numbers from Image 2) */}
-            <div className="space-y-3.5">
-              {movies.slice(0, 5).map((movie, index) => {
-                const rank = index + 1;
-                return (
-                  <Link
-                    key={`rank-${movie.id}`}
-                    href={`/movie/${movie.id}`}
-                    className="group relative flex items-center gap-3.5 p-2 rounded-xl hover:bg-white/[0.03] transition duration-200"
-                  >
-                    {/* Big Italic Number (Image 2 style) */}
-                    <span className="text-3xl font-black italic tracking-tighter text-slate-500 group-hover:text-[#8cf202] transition-colors w-7 text-center font-rank">
-                      {rank}
-                    </span>
+            {/* Ranked List */}
+            {movies.length > 0 ? (
+              <div className="space-y-3.5">
+                {movies.slice(0, 5).map((movie, index) => {
+                  const rank = index + 1;
+                  return (
+                    <Link
+                      key={`rank-${movie.id}`}
+                      href={`/movie/${movie.id}`}
+                      className="group relative flex items-center gap-3.5 p-2 rounded-xl hover:bg-white/[0.03] transition duration-200"
+                    >
+                      {/* Big Italic Number (Image 2 style) */}
+                      <span className="text-3xl font-black italic tracking-tighter text-slate-500 group-hover:text-[#8cf202] transition-colors w-7 text-center font-rank">
+                        {rank}
+                      </span>
 
-                    {/* Movie info */}
-                    <div className="flex-1 min-w-0 space-y-1">
-                      <h4 className="font-black text-xs text-white group-hover:text-[#8cf202] transition-colors truncate">
-                        {movie.title}
-                      </h4>
+                      {/* Movie info */}
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <h4 className="font-black text-xs text-white group-hover:text-[#8cf202] transition-colors truncate">
+                          {movie.title}
+                        </h4>
 
-                      <div className="flex items-center gap-2 text-[10px]">
-                        <span className="flex items-center gap-1 text-amber-400 font-bold">
-                          <Star className="w-2.5 h-2.5 fill-amber-400" />
-                          {movie.rating}
-                        </span>
-                        <span className="text-slate-500 uppercase font-semibold text-[9px] bg-white/[0.04] px-1.5 py-0.2 rounded">
-                          IMAX
-                        </span>
+                        <div className="flex items-center gap-2 text-[10px]">
+                          <span className="flex items-center gap-1 text-amber-400 font-bold">
+                            <Star className="w-2.5 h-2.5 fill-amber-400" />
+                            {movie.rating}
+                          </span>
+                          <span className="text-slate-500 uppercase font-semibold text-[9px] bg-white/[0.04] px-1.5 py-0.2 rounded">
+                            IMAX
+                          </span>
+                        </div>
+
+                        {/* Specs bar (like Image 2 bottom row in rank widget) */}
+                        <div className="flex items-center gap-2 text-[9px] font-mono text-slate-500">
+                          <span>4DX</span>
+                          <span>•</span>
+                          <span>Dolby 7.1</span>
+                        </div>
                       </div>
 
-                      {/* Specs bar (like Image 2 bottom row in rank widget) */}
-                      <div className="flex items-center gap-2 text-[9px] font-mono text-slate-500">
-                        <span>4DX</span>
-                        <span>•</span>
-                        <span>Dolby 7.1</span>
-                      </div>
-                    </div>
-
-                    {/* Mini thumbnail */}
-                    <img
-                      src={movie.posterUrl}
-                      alt={movie.title}
-                      className="w-9 h-12 object-cover rounded-md border border-white/[0.08] flex-shrink-0"
-                    />
-                  </Link>
-                );
-              })}
-            </div>
+                      {/* Mini thumbnail */}
+                      <img
+                        src={movie.posterUrl}
+                        alt={movie.title}
+                        className="w-9 h-12 object-cover rounded-md border border-white/[0.08] flex-shrink-0"
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="py-8 text-center space-y-1">
+                <p className="text-xs text-slate-400 font-semibold">No trending movies yet</p>
+                <p className="text-[11px] text-slate-600">Titles will be ranked here once added in Admin.</p>
+              </div>
+            )}
           </div>
         </div>
 
