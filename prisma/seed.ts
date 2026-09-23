@@ -4,39 +4,50 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding movie booking database...');
+  console.log('Seeding movie booking database (non-destructive)...');
 
-  // 1. Clear existing data
-  await prisma.booking.deleteMany();
-  await prisma.show.deleteMany();
-  await prisma.screen.deleteMany();
-  await prisma.theatre.deleteMany();
-  await prisma.movie.deleteMany();
-  await prisma.user.deleteMany();
-
-  // 2. Create Users (Admin and regular Customer)
-  const hashedAdminPassword = await bcrypt.hash('admin123', 10);
-  const hashedUserPassword = await bcrypt.hash('user123', 10);
-
-  const admin = await prisma.user.create({
-    data: {
-      name: 'Cinema Admin',
-      email: 'admin@cinema.com',
-      password: hashedAdminPassword,
-      role: 'ADMIN',
-    },
+  // Check if Admin user already exists
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@cinema.com' },
   });
 
-  const demoUser = await prisma.user.create({
-    data: {
-      name: 'John Doe',
-      email: 'user@cinema.com',
-      password: hashedUserPassword,
-      role: 'USER',
-    },
+  if (!existingAdmin) {
+    const hashedAdminPassword = await bcrypt.hash('admin123', 10);
+    await prisma.user.create({
+      data: {
+        name: 'Cinema Admin',
+        email: 'admin@cinema.com',
+        password: hashedAdminPassword,
+        role: 'ADMIN',
+      },
+    });
+    console.log('Created Admin user (admin@cinema.com)');
+  }
+
+  // Check if Demo user already exists
+  const existingUser = await prisma.user.findUnique({
+    where: { email: 'user@cinema.com' },
   });
 
-  console.log('Created Users: Admin (admin@cinema.com), User (user@cinema.com)');
+  if (!existingUser) {
+    const hashedUserPassword = await bcrypt.hash('user123', 10);
+    await prisma.user.create({
+      data: {
+        name: 'John Doe',
+        email: 'user@cinema.com',
+        password: hashedUserPassword,
+        role: 'USER',
+      },
+    });
+    console.log('Created Demo user (user@cinema.com)');
+  }
+
+  // Check if theatres already exist (do not duplicate or delete existing screens)
+  const existingTheatresCount = await prisma.theatre.count();
+  if (existingTheatresCount > 0) {
+    console.log(`Database already has ${existingTheatresCount} multiplexes. Preserving existing theatres and movies.`);
+    return;
+  }
 
   // 3. Create Theatres & Screens
   const theatre1 = await prisma.theatre.create({
