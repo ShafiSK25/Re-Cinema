@@ -3,6 +3,8 @@
 A full-stack cinema ticket booking web application inspired by BookMyShow and modern streaming aesthetic. Built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Prisma ORM**.
 
 ---
+🔗 Live demo: https://re-cinema.onrender.com/
+
 
 ## 🌟 Key Features
 
